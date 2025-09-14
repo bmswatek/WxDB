@@ -20,8 +20,6 @@ def get_lat_long(address):
             lon = data[0]['lon']
             return lat, lon
         else:
-            print("No results found for address.")
             return None, None
-    except requests.exceptions.RequestException as e:
-        print(f"Request failed: {e}")
+    except Exception as e:
         return None, None
