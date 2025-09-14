@@ -25,8 +25,3 @@ def get_lat_long(address):
     except requests.exceptions.RequestException as e:
         print(f"Request failed: {e}")
         return None, None
-
-# An example
-address = "Exeter, UK"
-lat, lon = get_lat_long(address)
-print(f"Latitude: {lat}, Longitude: {lon}")
