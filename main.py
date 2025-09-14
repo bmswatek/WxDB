@@ -28,12 +28,13 @@ async def commandsetup():
         if filename.endswith('.py'):
             await bot.load_extension(f'cogs.{filename[:-3]}')
 
-#Bot message in terminal when bot is ready
+
 @bot.event
 async def on_ready():
     #Sync (/) commnds 
     await bot.tree.sync()
     print("Slash commands synced!")
+    #Bot message in terminal when bot is ready
     print(f"{bot.user.name} has come online!")
     
 
