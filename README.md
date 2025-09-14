@@ -16,6 +16,7 @@ This is a simple Discord bot that provides real-time weather forecasts on comman
     * `python-dotenv`
     * `discord.py`
     * `aiohttp`
+    * `requests`
     * Weather API (e.g. [Open-Meteo](https://open-meteo.com/))
 
 ## Installation
@@ -34,6 +35,7 @@ cd ~/discord-bot-collab
 py -m pip install python-dotenv
 py -m pip install discord.py
 py -m pip install aiohttp
+py -m pip install requests
 ```
 (or replace `py` with `python3`) 
 
