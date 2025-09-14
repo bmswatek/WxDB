@@ -1,7 +1,7 @@
 # FILES
-.env
-discord.log
-todo.txt
+*.env
+*.log
+*.txt
 
 # FOLDERS
 __pycache__
