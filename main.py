@@ -32,6 +32,9 @@ async def commandsetup():
 @bot.event
 async def on_ready():
     print(f"{bot.user.name} has come online!")
+    #Sync (/) commnds 
+    await bot.tree.sync()
+    print("Slash commands synced!")
 
 #Start the bot with cog loading 
 async def main():
