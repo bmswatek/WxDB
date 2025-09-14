@@ -1,3 +1,6 @@
 # FILES
 .env
 discord.log
+
+# FOLDERS
+__pycache__

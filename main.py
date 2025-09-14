@@ -3,6 +3,7 @@ from discord.ext import commands
 import logging 
 from dotenv import load_dotenv
 import os
+import asyncio
 
 #Loading environemnt Variables
 load_dotenv()
@@ -20,15 +21,22 @@ intents.members = True
 #Set custom prefix for commands here
 bot = commands.Bot(command_prefix='/', intents=intents)
 
+#Loading COGS to setup all the commands
+#Define commandsetup() to load every file within the cogs folder without having to add every new command into the main.py 
+async def commandsetup():
+    for filename in os.listdir('./cogs'):
+        if filename.endswith('.py'):
+            await bot.load_extension(f'cogs.{filename[:-3]}')
+
 #Bot message in terminal when bot is ready
 @bot.event
 async def on_ready():
     print(f"{bot.user.name} has come online!")
 
-# /hello triggers this command 
-@bot.command()
-async def hello(ctx):
-    await ctx.send(f"Hello {ctx.author.mention}!")
+#Start the bot with cog loading 
+async def main():
+    await commandsetup()
+    await bot.start(token)
 
-#Calls for token and runs bot 
-bot.run(token, log_handler=handler, log_level=logging.DEBUG)
+if __name__ == "__main__":
+    asyncio.run(main())
