@@ -2,8 +2,17 @@ from discord.ext import commands
 import discord
 import aiohttp
 from discord import app_commands
+from datetime import datetime
 from utils.location import get_lat_long
 from utils.dict import WEATHER_CODES
+
+def iso_convert(date_str: str):
+    """Converts the ISO standard date formate and splits it into two strings to
+       shows the weekday and DD/MM."""
+    dt = datetime.fromisoformat(date_str)
+    weekday = dt.strftime("%a")  # Returns Mon, Tues etc...
+    dd_mm = dt.strftime("%d/%m") # Returns 22/04 etc...
+    return weekday, dd_mm
 
 # Open Meteo Weather Codes Reference, utilising the World Meteorological Organization (WMO) system
 # https://www.nodc.noaa.gov/archive/arc0021/0002199/1.1/data/0-data/HTML/WMO-CODE/WMO4677.HTM
@@ -29,8 +38,8 @@ class Weather(commands.Cog):
         embed = discord.Embed(title=f"7-Day Weather Forecast: {location}", color=discord.Color.blue())
         for day in forecast_data:
             embed.add_field(
-                name=day["date"],
-                value=f"{day['temp_min']}°C - {day['temp_max']}°C\n{day['weather']}",
+                name=iso_convert(day["date"])[0] + " " + iso_convert(day["date"])[1],
+                value=f"Day: {round(day['temp_max'])}°C\nNight: {round(day['temp_min'])}°C\n{day['weather']}",
                 inline=False
             )
         
