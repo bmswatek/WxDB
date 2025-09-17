@@ -5,14 +5,15 @@ from discord import app_commands
 from datetime import datetime
 from utils.location import get_lat_long
 from utils.dict import WEATHER_CODES
+from utils.weather_icons import get_weather_icon
 
 # Function to convert ISO date string to weekday and DD/MM format
 def iso_convert(date_str: str):
     """Converts the ISO standard date formate and splits it into two strings to
        shows the weekday and DD/MM."""
     dt = datetime.fromisoformat(date_str)
-    weekday = dt.strftime("%a")  # Returns Mon, Tues etc...
-    dd_mm = dt.strftime("%d/%m") # Returns 22/04 etc...
+    weekday = dt.strftime("%a")
+    dd_mm = dt.strftime("%d/%m")
     return weekday, dd_mm
 
 # Open Meteo Weather Codes Reference, utilising the World Meteorological Organization (WMO) system
@@ -26,13 +27,12 @@ class Weather(commands.Cog):
     # Use slash command decorator
     @app_commands.command(name="weather", description="Get a 7-day weather forecast")
     async def weather(self, interaction: discord.Interaction, location: str):
-
         # Defer the response to allow for processing before sending the embeds
         await interaction.response.defer()
 
         # Get latitude and longitude from location.py and grabs forecast for said location
-        lat, long = get_lat_long(location)
-        if lat is None or long is None:
+        lat, lon = get_lat_long(location)
+        if lat is None or lon is None:
             # Sending error message as a followup (ephemeral)
             await interaction.followup.send(
                 f"Could not find coordinates for **{location}**.", ephemeral=True
@@ -40,7 +40,7 @@ class Weather(commands.Cog):
             return
 
         # Fetch forecast data from Open-Meteo API
-        forecast_data = await self.get_weather(lat, long)
+        forecast_data = await self.get_weather(lat, lon)
 
         # Prepare a list to hold all embeds for 7 days
         embeds = []
@@ -48,36 +48,37 @@ class Weather(commands.Cog):
         # Create a separate embed for each day
         for day in forecast_data:
             weekday, dd_mm = iso_convert(day["date"])
+            icon_url = get_weather_icon(day["weather"])  # Get the weather icon URL
             # Build embed for the forecast data 
             embed = discord.Embed(
-                title=f"Weather Forecast: {location} — {weekday} {dd_mm}",
-                color=discord.Color.blue()
+                title=f"Weather Forecast: {location} — {weekday} {dd_mm}"
             )
+            embed.set_thumbnail(url=icon_url)  # Use weather icon
             embed.add_field(
-                name="Day Temp", 
-                value=f"{round(day['temp_max'])}°C", 
+                name="Day Temp",
+                value=f"{round(day['temp_max'])}°C",
                 inline=True
             )
             embed.add_field(
-                name="Night Temp", 
-                value=f"{round(day['temp_min'])}°C", 
+                name="Night Temp",
+                value=f"{round(day['temp_min'])}°C",
                 inline=True
             )
             embed.add_field(
-                name="Weather", 
-                value=day['weather'], 
+                name="Weather",
+                value=day['weather'],
                 inline=False
             )
             # Add UV Index 
             embed.add_field(
-                name="UV Index", 
-                value=f"{round(day['uv_index'])}", 
+                name="UV Index",
+                value=f"{round(day['uv_index'])}",
                 inline=True
             )
             # Add Precipitation %
             embed.add_field(
-                name="Precipitation", 
-                value=f"{5 * round(day['precipitation'] / 5)}%", # Round to the nearest 5% 
+                name="Precipitation",
+                value=f"{5 * round(day['precipitation'] / 5)}%",  # Round to the nearest 5% 
                 inline=True
             )
 
@@ -90,6 +91,7 @@ class Weather(commands.Cog):
 
     # Fetch weather data from Open-Meteo API
     async def get_weather(self, lat, lon):
+        """Fetch daily weather data from Open-Meteo API."""
         # Added uv_index_max and precipitation_probability_max to API call
         url = (
             f"https://api.open-meteo.com/v1/forecast?"
@@ -121,7 +123,6 @@ class Weather(commands.Cog):
                 "uv_index": uv,
                 "precipitation": precip
             })
-
         return forecast_list
 
 # Setup function to load the Cog
