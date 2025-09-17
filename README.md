@@ -57,3 +57,4 @@ With thanks to:
 * [Open-Meteo](https://open-meteo.com/) for their open-source weather data<sup>[1](https://github.com/open-meteo/open-meteo)</sup>;
 * [Nominatim](https://nominatim.openstreetmap.org/search) for latitude and longitudes for locations<sup>[2](https://github.com/osm-search/nominatim-ui)</sup>;
 * [NOAA](https://www.nodc.noaa.gov/archive/arc0021/0002199/1.1/data/0-data/HTML/WMO-CODE/WMO4677.HTM) for their weather codes.
+* [OpenWeather](https://openweathermap.org/) for their weather icons. 
