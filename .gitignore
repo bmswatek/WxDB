@@ -3,6 +3,7 @@
 *.log
 *.txt
 *test*
+*.json
 
 # FOLDERS
 __pycache__
