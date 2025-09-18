@@ -24,9 +24,9 @@ This is a simple Discord bot that provides real-time weather forecasts on comman
 ### 1. Clone the repository
 
 ```
-git clone https://github.com/bmswatek/discord-bot-collab.git
+git clone https://github.com/bmswatek/WxDB.git
 
-cd ~/discord-bot-collab
+cd ~/WxDB
 ```
 
 ### 2. Install the dependancies and libraries
