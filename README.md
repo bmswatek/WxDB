@@ -5,7 +5,7 @@ This is a simple Discord bot that provides real-time weather forecasts on comman
 
 ## Features ✨
 * Fetches current weather, hourly, six-hourly and 7-day forecasts for multiple locations;
-* Supports slash commands e.g: `/weather-7-day`;
+* Supports slash commands e.g: `/weather`;
 * Showing weather variables such as minimum and maximum temperatures, precipitaion, cloud cover and more;
 * Easy to deploy on any server!
 
